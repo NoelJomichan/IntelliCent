@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:untitled/Python/sendRequest.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,6 +13,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          sendPostRequest();
+        },
+
+      ),
+      backgroundColor: Colors.blueGrey[100],
+    );
   }
 }
