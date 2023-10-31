@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final incomeController = TextEditingController();
   final fixedExpenseController = TextEditingController();
   final dependentCountController = TextEditingController();
-  final maritalStatusController = TextEditingController();
+  //final maritalStatusController = TextEditingController();
   final dailyNeedsController = TextEditingController();
   final transportationController = TextEditingController();
   final foodBevController = TextEditingController();
@@ -24,8 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final shoppingController = TextEditingController();
   final servicesController = TextEditingController();
   final othersController = TextEditingController();
+  int gender = 0;
+  int maritalStatus = 0;
+  int profIndustrial = 0;
+  int profKnowledge = 0;
+  int profPublic = 0;
+  int profService = 0;
 
-  var varList = []
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -93,6 +98,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration:  const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter the number of people that are dependent on your income',
+                  ),
+                ),
+                TextFormField(
+                  controller: dailyNeedsController,
+                  keyboardType: TextInputType.number,
+                  validator: (value){
+                    if(value == null || value.isEmpty){
+                      return 'Please enter amount you spent on daily needs';
+                    }
+                    return null;
+                  },
+                  decoration:  const InputDecoration(
+                    border: UnderlineInputBorder(),
+                    labelText: 'Enter the amount you spent on daily needs',
                   ),
                 ),
                 TextFormField(
@@ -179,6 +198,111 @@ class _HomeScreenState extends State<HomeScreen> {
                     labelText: 'Enter amount spent on other expenses',
                   ),
                 ),
+                const Padding(padding: EdgeInsets.all(10)),
+                const Text('Gender'),
+                Column(
+                  // gender
+                  children: [
+                    RadioListTile(
+                        title: const Text('Male'),
+                        value: 1,
+                        groupValue: gender,
+                        onChanged: (value){
+                          setState(() {
+                            gender = value!;
+                          });
+                        } ),
+                    RadioListTile(
+                        title: const Text('Female'),
+                        value: 0,
+                        groupValue: gender,
+                        onChanged: (value){
+                          setState(() {
+                            gender = value!;
+                          });
+                        } )
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.all(10)),
+                const Text('Marital Status'),
+                Column(
+                  //marital status
+                  children: [
+                    RadioListTile(
+                        title: const Text('Married'),
+                        value: 1,
+                        groupValue: maritalStatus,
+                        onChanged: (value){
+                          setState(() {
+                            maritalStatus = value!;
+                          });
+                        } ),
+                    RadioListTile(
+                        title: const Text('Not Married'),
+                        value: 0,
+                        groupValue: maritalStatus,
+                        onChanged: (value){
+                          setState(() {
+                            maritalStatus = value!;
+                          });
+                        } )
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.all(10)),
+                const Text('Profession'),
+                Column(
+                  //profession
+                  children: [
+                    RadioListTile(
+                        title: const Text('Industrial'),
+                        value: 1,
+                        groupValue: profIndustrial,
+                        onChanged: (value){
+                          setState(() {
+                            profIndustrial = value!;
+                            profKnowledge = 0;
+                            profPublic = 0;
+                            profService = 0;
+                          });
+                        } ),
+                    RadioListTile(
+                        title: const Text('Knowledge'),
+                        value: 1,
+                        groupValue: profKnowledge,
+                        onChanged: (value){
+                          setState(() {
+                            profIndustrial = 0;
+                            profKnowledge = value!;
+                            profPublic = 0;
+                            profService = 0;
+                          });
+                        } ),
+                    RadioListTile(
+                        title: const Text('Public'),
+                        value: 1,
+                        groupValue: profPublic,
+                        onChanged: (value){
+                          setState(() {
+                            profIndustrial = 0;
+                            profKnowledge = 0;
+                            profPublic = value!;
+                            profService = 0;
+                          });
+                        } ),
+                    RadioListTile(
+                        title: const Text('Service'),
+                        value: 1,
+                        groupValue: profService,
+                        onChanged: (value){
+                          setState(() {
+                            profIndustrial = 0;
+                            profKnowledge = 0;
+                            profPublic = 0;
+                            profService = value!;
+                          });
+                        } )
+                  ],
+                ),
               ],
             ),
           )
@@ -203,8 +327,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   shoppingController.text,
                   servicesController.text,
                   othersController.text,
-                  maritalStatusController,
-
+                  gender,
+                  maritalStatus,
+                  profIndustrial,
+                  profKnowledge,
+                  profPublic,
+                  profService
               );
 
               print(ageController.text);

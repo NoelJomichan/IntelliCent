@@ -4,7 +4,8 @@ import 'dart:convert';
 
 Future<void> sendPostRequest(
     age, income, fixedExpense, dependentCount,  dailyNeeds, transportation, foodBev, healthcare, shopping,
-    services, other, maritalStatus, professionIndustrial, professionKnowledge, professionPublic, professionService, gender ) async {
+    services, other, gender, maritalStatus, professionIndustrial, professionKnowledge, professionPublic,
+    professionService)  async {
   final url = Uri.parse('http://192.168.243.100:5000/predict'); // Replace with the API URL
 
   final Map<String, dynamic> inputData = {
