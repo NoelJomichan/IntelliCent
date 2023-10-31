@@ -2,26 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Future<void> sendPostRequest() async {
-  final url = Uri.parse('http://192.168.243.100:5000/predict');
+Future<void> sendPostRequest(
+    age, income, fixedExpense, dependentCount,  dailyNeeds, transportation, foodBev, healthcare, shopping,
+    services, other, maritalStatus, professionIndustrial, professionKnowledge, professionPublic, professionService, gender ) async {
+  final url = Uri.parse('http://192.168.243.100:5000/predict'); // Replace with the API URL
+
   final Map<String, dynamic> inputData = {
-  'Age': [25],
-  'Income': [75000],
-  'Fixed Expenses': [32000],
-  'Dependent Count': [2],
-  'Marital Status' : [1],
-  'Daily Needs': [4000],
-  'Transportation': [3000],
-  'Food and Bev': [3000],
-  'Healthcare': [2000],
-  'Shopping': [8500],
-  'Services': [4500],
-  'Other': [5300],
-  'Profession_Industrial': [0],
-  'Profession_Knowledge': [0],
-  'Profession_Public': [0],
-  'Profession_Service': [1],
-  'Gender_Male': [1]
+    "Age": age,
+    "Income": income,
+    "Fixed Expenses": fixedExpense,
+    "Dependent Count": dependentCount,
+    "Marital Status": maritalStatus,
+    "Daily Needs": dependentCount,
+    "Transportation": transportation,
+    "Food and Bev": foodBev,
+    "Healthcare": healthcare,
+    "Shopping": shopping,
+    "Services": services,
+    "Other": other,
+    "Profession_Industrial": professionIndustrial,
+    "Profession_Knowledge": professionKnowledge,
+    "Profession_Public": professionPublic,
+    "Profession_Service": professionService,
+    "Gender_Male": gender
   };
 
   final response = await http.post(
