@@ -1,13 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Future<void> sendPostRequest(
+Future sendPostRequest(
     age, income, fixedExpense, dependentCount,  dailyNeeds, transportation, foodBev, healthcare, shopping,
     services, other, gender, maritalStatus, professionIndustrial, professionKnowledge, professionPublic,
     professionService)  async {
-  final url = Uri.parse('http://192.168.243.100:5000/predict'); // Replace with the API URL
-
+  print('reached');
   final Map<String, dynamic> inputData = {
     "Age": age,
     "Income": income,
@@ -27,17 +27,22 @@ Future<void> sendPostRequest(
     "Profession_Service": professionService,
     "Gender_Male": gender
   };
-
+  final url = Uri.parse('http://192.168.240.100:5000/predict'); // Replace with the API URL
   final response = await http.post(
     url,
     headers: {"Content-Type": "application/json"},
     body: jsonEncode(inputData),
   );
+
   if (response.statusCode == 200) {
     final responseMap = jsonDecode(response.body);
     final predictedSavings = responseMap['predicted_savings'];
+
     print("Predicted Savings: $predictedSavings");
+    return predictedSavings;
   } else {
     print("Request failed with status: ${response.statusCode}");
+    return Text('Failed');
   }
+
 }

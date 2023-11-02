@@ -23,13 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final shoppingController = TextEditingController();
   final servicesController = TextEditingController();
   final othersController = TextEditingController();
-  int gender = 0;
-  int maritalStatus = 0;
+  int? gender;
+  int? maritalStatus;
   int profIndustrial = 0;
   int profKnowledge = 0;
   int profPublic = 0;
   int profService = 0;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -197,6 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     labelText: 'Enter amount spent on other expenses',
                   ),
                 ),
+
                 const Padding(padding: EdgeInsets.all(10)),
                 const Text('Gender'),
                 Column(
@@ -308,26 +308,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         floatingActionButton: FloatingActionButton(
             child: const Text('Enter'),
-            onPressed: () {
-              print(ageController.text);
-              print(incomeController.text);
-              print(fixedExpenseController.text);
-              print(dependentCountController.text);
-              print(dailyNeedsController.text);
-              print(transportationController.text);
-              print(foodBevController.text);
-              print(healthcareController.text);
-              print(shoppingController.text);
-              print(servicesController.text);
-              print(othersController.text);
-              print(gender);
-              print(maritalStatus);
-              print(profIndustrial);
-              print(profKnowledge);
-              print(profPublic);
-              print(profService);
 
-              sendPostRequest(
+            onPressed: () async {
+              final predictedSavings = await sendPostRequest(
                   ageController.text,
                   incomeController.text,
                   fixedExpenseController.text,
@@ -346,8 +329,43 @@ class _HomeScreenState extends State<HomeScreen> {
                   profPublic,
                   profService
               );
+
+              if (predictedSavings != null) {
+                showAlertDialog(context, 'Predicted Savings received: $predictedSavings');
+                // print('Predicted Savings received: $predictedSavings');
+              } else {
+                print("Request failed.");
+              }
+              // sendPostRequest(
+              //   24, 200000, 70000, 4, 9000, 8300, 9300, 3600, 18000, 9600, 12000,
+              //     gender,
+              //     maritalStatus,
+              //     profIndustrial,
+              //     profKnowledge,
+              //     profPublic,
+              //     profService
+              // );
             }),
         ),
       );
+  }
+  void showAlertDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Predicted Savings'),
+          content: Text(message), // Use the provided message
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the alert dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
