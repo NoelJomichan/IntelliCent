@@ -16,7 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final incomeController = TextEditingController();
   final fixedExpenseController = TextEditingController();
   final dependentCountController = TextEditingController();
-  //final maritalStatusController = TextEditingController();
   final dailyNeedsController = TextEditingController();
   final transportationController = TextEditingController();
   final foodBevController = TextEditingController();
@@ -310,11 +309,24 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton(
             child: const Text('Enter'),
             onPressed: () {
-              if(_formKey.currentState!.validate()){
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                );
-              }
+              print(ageController.text);
+              print(incomeController.text);
+              print(fixedExpenseController.text);
+              print(dependentCountController.text);
+              print(dailyNeedsController.text);
+              print(transportationController.text);
+              print(foodBevController.text);
+              print(healthcareController.text);
+              print(shoppingController.text);
+              print(servicesController.text);
+              print(othersController.text);
+              print(gender);
+              print(maritalStatus);
+              print(profIndustrial);
+              print(profKnowledge);
+              print(profPublic);
+              print(profService);
+
               sendPostRequest(
                   ageController.text,
                   incomeController.text,
@@ -334,18 +346,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   profPublic,
                   profService
               );
-
-              print(ageController.text);
-              print(incomeController.text);
-              print(fixedExpenseController.text);
-              print(dependentCountController.text);
-              print(dailyNeedsController.text);
-              print(transportationController.text);
-              print(foodBevController.text);
-              print(healthcareController.text);
-              print(shoppingController.text);
-              print(servicesController.text);
-              print(othersController.text);
             }),
         ),
       );
