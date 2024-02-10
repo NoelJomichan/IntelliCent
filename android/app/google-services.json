@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "808373537792",
+    "project_id": "intellicent-13441",
+    "storage_bucket": "intellicent-13441.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808373537792:android:280cd3d83dad2fdaca5ce5",
+        "android_client_info": {
+          "package_name": "com.example.untitled"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDjkinvjWtTDXT2DUIi7cyrHxkR0wWUV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
