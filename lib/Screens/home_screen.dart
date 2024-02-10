@@ -16,7 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final incomeController = TextEditingController();
   final fixedExpenseController = TextEditingController();
   final dependentCountController = TextEditingController();
-  //final maritalStatusController = TextEditingController();
   final dailyNeedsController = TextEditingController();
   final transportationController = TextEditingController();
   final foodBevController = TextEditingController();
@@ -309,12 +308,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         floatingActionButton: FloatingActionButton(
             child: const Text('Enter'),
+
             onPressed: () async {
-              // if(_formKey.currentState!.validate()){
-              //   ScaffoldMessenger.of(context).showSnackBar(
-              //       const SnackBar(content: Text('Processing Data')),
-              //   );
-              // }
               final predictedSavings = await sendPostRequest(
                   ageController.text,
                   incomeController.text,
@@ -335,7 +330,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   profService
               );
 
-
               if (predictedSavings != null) {
                 showAlertDialog(context, 'Predicted Savings received: $predictedSavings');
                 // print('Predicted Savings received: $predictedSavings');
@@ -351,17 +345,6 @@ class _HomeScreenState extends State<HomeScreen> {
               //     profPublic,
               //     profService
               // );
-              // print(ageController.text);
-              // print(incomeController.text);
-              // print(fixedExpenseController.text);
-              // print(dependentCountController.text);
-              // print(dailyNeedsController.text);
-              // print(transportationController.text);
-              // print(foodBevController.text);
-              // print(healthcareController.text);
-              // print(shoppingController.text);
-              // print(servicesController.text);
-              // print(othersController.text);
             }),
         ),
       );
