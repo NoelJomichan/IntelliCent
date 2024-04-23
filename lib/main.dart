@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: HomeScreen.id,
       routes: {
-      HomeScreen.id: (context) => const LoginPage(),
+      HomeScreen.id: (context) => const HomeScreen(),
     });
   }
 }
