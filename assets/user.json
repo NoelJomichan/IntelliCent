@@ -1,0 +1,44 @@
+{
+    "users": [
+        {
+            "username": "noel",
+            "api_key": "a12345678a",
+            "savings": "33694.79",
+            "risk": "high",
+            "duration": "5",
+            "expected_returns": "2000000"
+        },
+        {
+            "username": "saurav",
+            "api_key": "b12345678a",
+            "savings": "8000",
+            "risk": "high",
+            "duration": "10",
+            "expected_returns": "2000000"
+        },
+        {
+            "username": "pratik",
+            "api_key": "c12345678a",
+            "savings": "10000",
+            "risk": "medium",
+            "duration": "10",
+            "expected_returns": "2000000"
+        },
+        {
+            "username": "nigel",
+            "api_key": "a12345678a",
+            "savings": "20000",
+            "risk": "low",
+            "duration": "10",
+            "expected_returns": "2000000"
+        },
+        {
+            "username": "noel",
+            "api_key": "a12345678a",
+            "savings": "1639.94",
+            "risk": "low",
+            "duration": "10",
+            "expected_returns": "2000000"
+        }
+    ]
+}

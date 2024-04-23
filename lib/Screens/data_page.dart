@@ -1,6 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/Python/sendRequest.dart';
 
+void showAlertDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Predicted Savings'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop(); // Closes the alert dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void showGeneralAlert(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Input Error'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop(); // Closes the alert dialog
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class DataPage extends StatefulWidget {
   const DataPage({Key? key}) : super(key: key);
 
@@ -29,277 +69,161 @@ class _DataPageState extends State<DataPage> {
   int profKnowledge = 0;
   int profPublic = 0;
   int profService = 0;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'IntelliCent',
+      theme: ThemeData(
+        primarySwatch: Colors.blueGrey,
+        fontFamily: 'Open Sans',
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.grey[200],
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.blueAccent,
+            primary: Colors.white,
+          ),
+        ),
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('IntelliCent'),
+          backgroundColor: Colors.blueGrey[800],
         ),
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextFormField(
-                  controller: ageController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter age';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter your age',
-                  ),
-                ),
-                TextFormField(
-                  controller: incomeController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter income';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter your income',
-                  ),
-                ),
-                TextFormField(
-                  controller: fixedExpenseController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter fixed expense';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter your fixed expense',
-                  ),
-                ),
-                TextFormField(
-                  controller: dailyNeedsController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter amount you spent on daily needs';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter the amount you spent on daily needs',
-                  ),
-                ),
-                TextFormField(
-                  controller: transportationController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter amount you spent on transportation';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter the amount you spent on transportation',
-                  ),
-                ),
-                TextFormField(
-                  controller: foodBevController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter Food and Beverage amount';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter amount you spent on Food and Beverages',
-                  ),
-                ),
-                TextFormField(
-                  controller: healthcareController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter amount spent on healthcare';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter amount spent on healthcare',
-                  ),
-                ),
-                TextFormField(
-                  controller: shoppingController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter amount spent on shopping';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter amount spent on shopping',
-                  ),
-                ),
-                TextFormField(
-                  controller: servicesController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter amount spent on services';
-                    }
-                    return null;
-                  },
-                    decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter amount spent on services',
-                  ),
-                ),
-                TextFormField(
-                  controller: othersController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter amount spent on other expenses';
-                    }
-                    return null;
-                  },
-                    decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter amount spent on other expenses',
-                  ),
-                ),
+                SizedBox(height: 10.0),
+                _buildTextFormField(ageController, 'Enter your age', 'Please enter age'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(incomeController, 'Enter your income', 'Please enter income'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(fixedExpenseController, 'Enter your fixed expense', 'Please enter fixed expense'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(dailyNeedsController, 'Enter the amount you spent on daily needs', 'Please enter amount you spent on daily needs'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(transportationController, 'Enter the amount you spent on transportation', 'Please enter amount you spent on transportation'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(foodBevController, 'Enter amount you spent on Food and Beverages', 'Please enter Food and Beverage amount'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(healthcareController, 'Enter amount spent on healthcare', 'Please enter amount spent on healthcare'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(shoppingController, 'Enter amount spent on shopping', 'Please enter amount spent on shopping'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(servicesController, 'Enter amount spent on services', 'Please enter amount spent on services'),
+                SizedBox(height: 16.0),
+                _buildTextFormField(othersController, 'Enter amount spent on other expenses', 'Please enter amount spent on other expenses'),
+                SizedBox(height: 20.0),
+                const Text('Profession', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                _buildRadioListTile('Industrial', 1, profIndustrial, (val) {
+                  setState(() {
+                    profIndustrial = val!;
+                    profKnowledge = 0;
+                    profPublic = 0;
+                    profService = 0;
+                  });
+                }),
+                _buildRadioListTile('Knowledge', 1, profKnowledge, (val) {
+                  setState(() {
+                    profIndustrial = 0;
+                    profKnowledge = val!;
+                    profPublic = 0;
+                    profService = 0;
+                  });
+                }),
+                _buildRadioListTile('Public', 1, profPublic, (val) {
+                  setState(() {
+                    profIndustrial = 0;
+                    profKnowledge = 0;
+                    profPublic = val!;
+                    profService = 0;
+                  });
+                }),
+                _buildRadioListTile('Service', 1, profService, (val) {
+                  setState(() {
+                    profIndustrial = 0;
+                    profKnowledge = 0;
+                    profPublic = 0;
+                    profService = val!;
+                  });
+                }),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  child: const Text('Enter'),
+                  onPressed: () async {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      final predictedSavings = await sendPostRequest(
+                          ageController.text,
+                          incomeController.text,
+                          fixedExpenseController.text,
+                          dailyNeedsController.text,
+                          transportationController.text,
+                          foodBevController.text,
+                          healthcareController.text,
+                          shoppingController.text,
+                          servicesController.text,
+                          othersController.text,
+                          profIndustrial,
+                          profKnowledge,
+                          profPublic,
+                          profService
+                      );
 
-                const Padding(padding: EdgeInsets.all(10)),
-                const Padding(padding: EdgeInsets.all(10)),
-                const Text('Profession'),
-                Column(
-                  //profession
-                  children: [
-                    RadioListTile(
-                        title: const Text('Industrial'),
-                        value: 1,
-                        groupValue: profIndustrial,
-                        onChanged: (value){
-                          setState(() {
-                            profIndustrial = value!;
-                            profKnowledge = 0;
-                            profPublic = 0;
-                            profService = 0;
-                          });
-                        } ),
-                    RadioListTile(
-                        title: const Text('Knowledge'),
-                        value: 1,
-                        groupValue: profKnowledge,
-                        onChanged: (value){
-                          setState(() {
-                            profIndustrial = 0;
-                            profKnowledge = value!;
-                            profPublic = 0;
-                            profService = 0;
-                          });
-                        } ),
-                    RadioListTile(
-                        title: const Text('Public'),
-                        value: 1,
-                        groupValue: profPublic,
-                        onChanged: (value){
-                          setState(() {
-                            profIndustrial = 0;
-                            profKnowledge = 0;
-                            profPublic = value!;
-                            profService = 0;
-                          });
-                        } ),
-                    RadioListTile(
-                        title: const Text('Service'),
-                        value: 1,
-                        groupValue: profService,
-                        onChanged: (value){
-                          setState(() {
-                            profIndustrial = 0;
-                            profKnowledge = 0;
-                            profPublic = 0;
-                            profService = value!;
-                          });
-                        } )
-                  ],
+                      if (predictedSavings != null) {
+                        showAlertDialog(context, 'Predicted Savings received: $predictedSavings');
+                      } else {
+                        print("Request failed.");
+                      }
+                    } else {
+                      showGeneralAlert(context, 'Please fill in all fields before submitting.');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    foregroundColor: Colors.white,
+                  ),
                 ),
               ],
             ),
-          )
+          ),
         ),
-        floatingActionButton: FloatingActionButton(
-            child: const Text('Enter'),
-
-            onPressed: () async {
-              final predictedSavings = await sendPostRequest(
-                  ageController.text,
-                  incomeController.text,
-                  fixedExpenseController.text,
-                  dailyNeedsController.text,
-                  transportationController.text,
-                  foodBevController.text,
-                  healthcareController.text,
-                  shoppingController.text,
-                  servicesController.text,
-                  othersController.text,
-                  profIndustrial,
-                  profKnowledge,
-                  profPublic,
-                  profService
-              );
-
-              if (predictedSavings != null) {
-                showAlertDialog(context, 'Predicted Savings received: $predictedSavings');
-                // print('Predicted Savings received: $predictedSavings');
-              } else {
-                print("Request failed.");
-              }
-              // sendPostRequest(
-              //   24, 200000, 70000, 4, 9000, 8300, 9300, 3600, 18000, 9600, 12000,
-              //     gender,
-              //     maritalStatus,
-              //     profIndustrial,
-              //     profKnowledge,
-              //     profPublic,
-              //     profService
-              // );
-            }),
-        ),
-      );
+      ),
+    );
   }
-  void showAlertDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Predicted Savings'),
-          content: Text(message), // Use the provided message
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the alert dialog
-              },
-            ),
-          ],
-        );
+
+  Widget _buildTextFormField(TextEditingController controller, String label, String errorText) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return errorText;
+        }
+        return null;
       },
+      decoration: InputDecoration(
+        labelText: label,
+      ),
+    );
+  }
+
+  Widget _buildRadioListTile(String title, int value, int groupValue, Function(int?) onChanged) {
+    return RadioListTile(
+      title: Text(title),
+      value: value,
+      groupValue: groupValue,
+      onChanged: (int? newValue) => onChanged(newValue),
     );
   }
 }

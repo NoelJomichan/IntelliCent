@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.white,
           ),
           Text(
-            "INTELLICENT",
+            "IntelliCent",
             style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
