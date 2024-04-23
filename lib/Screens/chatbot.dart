@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 class ChatBot extends StatefulWidget {
   const ChatBot({Key? key}) : super(key: key);
 
+  static const String id = 'chat bot';
+
   @override
   State<ChatBot> createState() => _ChatBotState();
 }

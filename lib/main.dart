@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled/Screens/chatbot.dart';
-import 'package:untitled/Screens/home_screen.dart';
+import 'package:untitled/Screens/data_page.dart';
+import 'package:untitled/Screens/home_page.dart';
 import 'package:untitled/Screens/login.dart';
+import 'package:untitled/Screens/profile_page.dart';
 import 'package:untitled/firebase_options.dart';
 
 void main() async {
@@ -20,9 +22,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: HomeScreen.id,
+      initialRoute: HomePage.id,
       routes: {
-      HomeScreen.id: (context) => const ChatBot(),
+        DataPage.id: (context) => const DataPage(),
+        ChatBot.id: (context) => const ChatBot(),
+        ProfilePage.id: (context) => const ProfilePage(),
+        HomePage.id: (context) => const HomePage(),
+
+
     });
   }
 }

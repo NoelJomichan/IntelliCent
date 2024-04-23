@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/Python/sendRequest.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class DataPage extends StatefulWidget {
+  const DataPage({Key? key}) : super(key: key);
 
-  static const String id = 'home_screen';
+  static const String id = 'data page';
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DataPage> createState() => _DataPageState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DataPageState extends State<DataPage> {
   final _formKey = GlobalKey<FormState>();
   final ageController = TextEditingController();
   final incomeController = TextEditingController();
@@ -82,20 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration:  const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter your fixed expense',
-                  ),
-                ),
-                TextFormField(
-                  controller: dependentCountController,
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if(value == null || value.isEmpty){
-                      return 'Please enter the dependent count';
-                    }
-                    return null;
-                  },
-                  decoration:  const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter the number of people that are dependent on your income',
                   ),
                 ),
                 TextFormField(
@@ -198,55 +184,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 const Padding(padding: EdgeInsets.all(10)),
-                const Text('Gender'),
-                Column(
-                  // gender
-                  children: [
-                    RadioListTile(
-                        title: const Text('Male'),
-                        value: 1,
-                        groupValue: gender,
-                        onChanged: (value){
-                          setState(() {
-                            gender = value!;
-                          });
-                        } ),
-                    RadioListTile(
-                        title: const Text('Female'),
-                        value: 0,
-                        groupValue: gender,
-                        onChanged: (value){
-                          setState(() {
-                            gender = value!;
-                          });
-                        } )
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.all(10)),
-                const Text('Marital Status'),
-                Column(
-                  //marital status
-                  children: [
-                    RadioListTile(
-                        title: const Text('Married'),
-                        value: 1,
-                        groupValue: maritalStatus,
-                        onChanged: (value){
-                          setState(() {
-                            maritalStatus = value!;
-                          });
-                        } ),
-                    RadioListTile(
-                        title: const Text('Not Married'),
-                        value: 0,
-                        groupValue: maritalStatus,
-                        onChanged: (value){
-                          setState(() {
-                            maritalStatus = value!;
-                          });
-                        } )
-                  ],
-                ),
                 const Padding(padding: EdgeInsets.all(10)),
                 const Text('Profession'),
                 Column(
@@ -314,7 +251,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ageController.text,
                   incomeController.text,
                   fixedExpenseController.text,
-                  dependentCountController.text,
                   dailyNeedsController.text,
                   transportationController.text,
                   foodBevController.text,
@@ -322,8 +258,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   shoppingController.text,
                   servicesController.text,
                   othersController.text,
-                  gender,
-                  maritalStatus,
                   profIndustrial,
                   profKnowledge,
                   profPublic,
