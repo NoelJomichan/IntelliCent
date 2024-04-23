@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChatBot.id: (context) => const ChatBot(),
         ProfilePage.id: (context) => const ProfilePage(),
         HomePage.id: (context) => const HomePage(),
+        LoginPage.id: (context) => const LoginPage()
 
 
     });

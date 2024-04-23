@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../Python/userData.dart';
 
@@ -8,12 +9,14 @@ class ProfilePage extends StatefulWidget {
 
   static const String id = 'profile page';
 
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   List<User> _users = [];
+  late Map<String, dynamic> userData;
 
   @override
   void initState() {
@@ -21,13 +24,25 @@ class _ProfilePageState extends State<ProfilePage> {
     loadUserData();
   }
 
-  void loadUserData() async {
-    // Simulating loading JSON from local assets (replace with your actual data source)
-    String data = await DefaultAssetBundle.of(context).loadString('assets/user.json');
-    final jsonResult = jsonDecode(data)['users'];
-    setState(() {
-      _users = List<User>.from(jsonResult.map((x) => User.fromJson(x)));
-    });
+  loadUserData() async {
+
+    String username = 'saurav';
+    String url = 'http://10.0.2.2:7000/get-data?username=$username';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        // Parse the JSON response into a Dart Map
+        userData = json.decode(response.body);
+
+        // Call setState to update the UI with the fetched data
+        setState(() {});
+      } else {
+        throw Exception('Failed to load user data');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+
   }
 
   @override
@@ -53,24 +68,56 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.refresh),
+          onPressed: ()async{
+            loadUserData();
+          },
+        ),
         appBar: AppBar(
           title: const Text('Profile Page'),
           backgroundColor: Colors.blueGrey[800],
         ),
-        body: _users.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-          itemCount: _users.length,
-          itemBuilder: (context, index) {
-            return Card(
-              margin: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: Text(_users[index].username),
-                subtitle: Text('Savings: ${_users[index].savings} - Risk: ${_users[index].risk}'),
+        body: Center(
+          child: userData == null
+          ? CircularProgressIndicator()
+          :Column(
+
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.blue,
+                child: Text('API Key: ${userData['api_key']}'),
               ),
-            );
-          },
-        ),
+              Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.green,
+                child: Text('Username: ${userData['username']}'),
+              ),
+              Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.yellow,
+                child: Text('Savings: ${userData['savings']}'),
+              ),
+              Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.orange,
+                child: Text('Risk: ${userData['risk']}'),
+              ),
+              Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.red,
+                child: Text('Duration: ${userData['duration']}'),
+              ),
+              Container(
+                padding: EdgeInsets.all(8),
+                color: Colors.purple,
+                child: Text('Expected Returns: ${userData['expected_returns']}'),
+              ),
+            ],
+          ),
+        )
       ),
     );
   }

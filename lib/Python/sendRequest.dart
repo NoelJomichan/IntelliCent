@@ -19,7 +19,7 @@ Future sendPostRequest(
     "Services": services,
     "Other": other
   };
-  final url = Uri.parse('http://10.0.4.152:5000/predict'); // Replace with the API URL
+  final url = Uri.parse('http://192.168.31.91:5000/predict'); // Replace with the API URL
   final response = await http.post(
     url,
     headers: {"Content-Type": "application/json"},
