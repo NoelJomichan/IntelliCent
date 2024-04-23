@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:untitled/Screens/chatbot.dart';
 import 'package:untitled/Screens/home_screen.dart';
 import 'package:untitled/Screens/login.dart';
 import 'package:untitled/firebase_options.dart';
@@ -21,7 +22,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: HomeScreen.id,
       routes: {
+<<<<<<< HEAD
       HomeScreen.id: (context) => const HomeScreen(),
+=======
+      HomeScreen.id: (context) => const ChatBot(),
+>>>>>>> 9b4c775d9a24f4165fa4ed8f6fa24255496981a0
     });
   }
 }
