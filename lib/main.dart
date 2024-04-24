@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: HomePage.id,
+      initialRoute: LoginPage.id,
       routes: {
         DataPage.id: (context) => const DataPage(),
         ChatBot.id: (context) => const ChatBot(),

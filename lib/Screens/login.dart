@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/Screens/chatbot.dart';
+import 'package:untitled/Screens/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,7 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   late SharedPreferences sharedPreferences;
 
   late Color myColor = Colors.blue;
@@ -21,6 +21,21 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool rememberUser = false;
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreferences();
+  }
+
+  void initSharedPreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,60 +107,61 @@ class _LoginPageState extends State<LoginPage> {
         _buildGreyText("Please login with your information"),
         const SizedBox(height: 60),
 
-        _buildInputField("Email address",emailController),
+        _buildInputField("Email address", emailController),
         const SizedBox(height: 40),
 
         _buildInputField("Password", passwordController, isPassword: true),
         const SizedBox(height: 20),
         _buildRememberForgot(),
         const SizedBox(height: 20),
-        _buildLoginButton(() async{
+        _buildLoginButton(() async {
           FocusScope.of(context).unfocus();
           String id = emailController.text.trim();
           String password = passwordController.text.trim();
 
-
-          if (id.isEmpty){
+          if (id.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('ID is still Empty!'))
-            );
-          }else if(password.isEmpty){
+                content: Text('ID is still Empty!')));
+          } else if (password.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('Password is still Empty!'))
-            );
-          }else{
+                content: Text('Password is still Empty!')));
+          } else {
             QuerySnapshot snap = await FirebaseFirestore.instance
-                .collection("user").where('id', isEqualTo: id).get();
-            try{
-                if (password == snap.docs[0]['password']) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ChatBot())
-                    );
-                  print('success');
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Employee Password is Incorrect!')));
-                }
-            }catch (e){
-                String error = ' ';
-                if(e.toString() == 'RangeError (index): Invalid value: Valid value range is empty: 0'){
-                  setState(() {
-                    error = 'Employee ID does not exist!';
-                  });
-                }else{
-                  setState(() {
-                    error = 'An error occurred!';
-                  });
-                }
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(error))
-                );
+                .collection("user")
+                .where('id', isEqualTo: id)
+                .get();
+            try {
+              if (password == snap.docs[0]['password']) {
+                // Save the username to shared preferences
+                final username = snap.docs[0]['id'];
+                await sharedPreferences.setString('username', username);
+
+                // Navigate to the ChatBot screen
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HomePage()));
+                print('success');
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Employee Password is Incorrect!')));
               }
-
+            } catch (e) {
+              String error = ' ';
+              if (e.toString() ==
+                  'RangeError (index): Invalid value: Valid value range is empty: 0') {
+                setState(() {
+                  error = 'Employee ID does not exist!';
+                });
+              } else {
+                setState(() {
+                  error = 'An error occurred!';
+                });
+              }
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(error)));
+            }
           }
-
         }),
         const SizedBox(height: 20),
       ],
@@ -164,7 +180,6 @@ class _LoginPageState extends State<LoginPage> {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
-
         labelText: text,
         suffixIcon: isPassword ? Icon(Icons.remove_red_eye) : Icon(Icons.done),
       ),
@@ -211,5 +226,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
 }

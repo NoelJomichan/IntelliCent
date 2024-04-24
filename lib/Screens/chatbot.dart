@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bubble/bubble.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatBot extends StatefulWidget {
   const ChatBot({Key? key}) : super(key: key);
@@ -21,13 +22,37 @@ class _ChatBotState extends State<ChatBot> {
   final BOT_URL = Uri.parse("http://10.0.2.2:7000/bot") ;
   TextEditingController _queryController = TextEditingController();
 
+  late String? username;
+  late SharedPreferences sharedPreferences;
 
+  initSharedPreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreferences().then((_) {
+      username = sharedPreferences.getString('username');
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat Bot'),
+        title: const Text(
+            'IntelliChat',
+          style: TextStyle(
+            color: Colors.white, // Change the color to white
+          ),
+        ),
+        backgroundColor: Colors.blueGrey[800],
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: ()async {
@@ -92,7 +117,7 @@ class _ChatBotState extends State<ChatBot> {
       var client = _getClient();
       print(client);
       try{
-        String botUrl = 'http://10.0.2.2:7000/get-ai?prompt=${_queryController.text}';
+        String botUrl = 'http://10.0.2.2:7000/get-ai?prompt=${_queryController.text}&username=$username';
         _queryController.clear();
         // client.post(BOT_URL, body: {"query" : _queryController.text},)
         //   .then((response){
@@ -130,7 +155,7 @@ class _ChatBotState extends State<ChatBot> {
 
               child : Bubble(
                 radius: const Radius.circular(15.0),
-                color: mine ? Colors.deepOrangeAccent : Colors.white,
+                color: mine ? Colors.blueGrey[300] : Colors.white,
                 padding: const BubbleEdges.all(10),
                 child: Text(item.replaceAll("<bot>", "")),
               )),

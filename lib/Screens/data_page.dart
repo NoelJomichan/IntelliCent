@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/Python/sendRequest.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void showAlertDialog(BuildContext context, String message) {
   showDialog(
@@ -69,6 +70,19 @@ class _DataPageState extends State<DataPage> {
   int profKnowledge = 0;
   int profPublic = 0;
   int profService = 0;
+
+  late SharedPreferences sharedPreferences;
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreferences();
+  }
+
+  void initSharedPreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +176,7 @@ class _DataPageState extends State<DataPage> {
                 ElevatedButton(
                   child: const Text('Enter'),
                   onPressed: () async {
+                    String? username = sharedPreferences.getString('username');
                     if (_formKey.currentState?.validate() ?? false) {
                       final predictedSavings = await sendPostRequest(
                           ageController.text,
@@ -177,7 +192,8 @@ class _DataPageState extends State<DataPage> {
                           profIndustrial,
                           profKnowledge,
                           profPublic,
-                          profService
+                          profService,
+                          username
                       );
 
                       if (predictedSavings != null) {

@@ -1,40 +1,33 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import '../Python/userData.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
-
   static const String id = 'profile page';
-
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  List<User> _users = [];
   late Map<String, dynamic> userData;
+  late String? username;
 
-  @override
-  void initState() {
-    super.initState();
-    loadUserData();
+  late SharedPreferences sharedPreferences;
+
+  initSharedPreferences() async {
+    sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  loadUserData() async {
 
-    String username = 'saurav';
+  loadUserData() async {
     String url = 'http://10.0.2.2:7000/get-data?username=$username';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        // Parse the JSON response into a Dart Map
         userData = json.decode(response.body);
-
-        // Call setState to update the UI with the fetched data
         setState(() {});
       } else {
         throw Exception('Failed to load user data');
@@ -42,7 +35,21 @@ class _ProfilePageState extends State<ProfilePage> {
     } catch (e) {
       print('Error: $e');
     }
+  }
 
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedPreferences().then((_) {
+      username = sharedPreferences.getString('username');
+      loadUserData();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -68,57 +75,66 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       home: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.refresh),
-          onPressed: ()async{
-            loadUserData();
-          },
-        ),
-        appBar: AppBar(
-          title: const Text('Profile Page'),
-          backgroundColor: Colors.blueGrey[800],
-        ),
-        body: Center(
-          child: userData == null
-          ? CircularProgressIndicator()
-          :Column(
-
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.blue,
-                child: Text('API Key: ${userData['api_key']}'),
-              ),
-              Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.green,
-                child: Text('Username: ${userData['username']}'),
-              ),
-              Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.yellow,
-                child: Text('Savings: ${userData['savings']}'),
-              ),
-              Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.orange,
-                child: Text('Risk: ${userData['risk']}'),
-              ),
-              Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.red,
-                child: Text('Duration: ${userData['duration']}'),
-              ),
-              Container(
-                padding: EdgeInsets.all(8),
-                color: Colors.purple,
-                child: Text('Expected Returns: ${userData['expected_returns']}'),
-              ),
-            ],
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.blueAccent,
+            child: const Icon(Icons.refresh),
+            onPressed: () async {
+              loadUserData();
+            },
           ),
-        )
+          appBar: AppBar(
+            title: const Text('Profile Page'),
+            backgroundColor: Colors.blueGrey[800],
+          ),
+          body: Center(
+            child: userData == null
+                ? CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+            )
+                : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Welcome ',
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
+                        TextSpan(
+                          text: userData['username'],
+                          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.blueGrey[800]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text('Your details are:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+                  SizedBox(height: 10),
+                  _buildDataContainer('Savings', userData['savings']),
+                  _buildDataContainer('Risk', userData['risk']),
+                  _buildDataContainer('Duration (years)', userData['duration']),
+                ],
+              ),
+            ),
+          )
       ),
+    );
+  }
+
+  Widget _buildDataContainer(String title, dynamic value) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.blueGrey.shade100),
+      ),
+      child: Text('$title: $value', style: TextStyle(fontSize: 21, color: Colors.black)),
     );
   }
 }
